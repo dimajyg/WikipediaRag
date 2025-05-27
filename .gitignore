@@ -1,0 +1,52 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Environments
+.env
+.venv/
+env/
+venv/
+ENV/
+
+# IDEs and editors
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# Data and databases
+data/
+*.sqlite3
+*.db
+
+# Notebooks
+.ipynb_checkpoints/
+
+# Poetry
+poetry.lock
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Logs
+logs/
+*.log
+
+# Build artifacts
+dist/
+build/
+*.egg-info/
+
+# Dataset (if large or downloaded)
+# ru_rag_test_dataset/ # Keep if small and part of the repo, otherwise ignore
+
+# Evaluation outputs
+# evaluation/outputs/ # Or similar, depending on where evaluation results are stored

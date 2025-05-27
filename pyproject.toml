@@ -1,0 +1,71 @@
+[project]
+name = "wikipedia-rag"
+version = "0.1.0"
+description = "RAG system on wikipedia data"
+authors = [
+    {name = "Dmitrii Tikhanovskii",email = "dimont200246@gmail.com"}
+]
+readme = "README.md"
+requires-python = ">=3.11,<3.13"
+dependencies = [
+    "numpy>=1.24.4",
+    "asyncio>=3.4.3",
+    "nest-asyncio>=1.5.8",
+    "langchain>=0.1.0",
+    "langchain-groq>=0.1.0",
+    "langchain-community>=0.0.20",
+    "chromadb>=0.4.0",
+    "aiogram>=3.0.0",
+    "groqeval>=0.1.0",
+    "pandas>=1.5.0",
+    "tiktoken>=0.5.0",
+    "sentence-transformers>=2.2.0",
+    "beautifulsoup4>=4.12.0",
+    "selenium>=4.10.0",
+    "pypdf>=3.15.0"
+]
+
+
+[build-system]
+requires = ["poetry-core>=2.0.0,<3.0.0"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.poetry]
+packages = [
+    { include = "src" }
+]
+
+[tool.poetry.group.dev.dependencies]
+isort = "^5.12.0"
+black = "^23.7.0"
+flake8 = "^7.0.0"
+flake8-pyproject = "1.2.3"
+mypy = "^1.4.1"
+pylint = "^3.2"
+
+[tool.isort]
+profile = "black"
+line_length = 88
+known_first_party = ["src"]
+
+[tool.flake8]
+max-line-length = 88
+ignore = "E203,W503"
+exclude = ["__pycache__", ".github", "datasets", "output", "weights", "ru_rag_test_dataset", "data", "notebooks", ".venv"]
+
+
+[tool.mypy]
+python_version = "3.11"
+warn_return_any = true
+warn_unused_configs = true
+disallow_untyped_defs = true
+check_untyped_defs = true
+ignore_missing_imports = true
+exclude = "(__pycache__|.github|datasets|output|weights|ru_rag_test_dataset|data|notebooks|.venv)"
+
+[tool.pylint."DESIGN"]
+max-args = 15
+max-positional-arguments = 10
+
+[tool.pylint.messages_control]
+disable = ["too-few-public-methods", "no-member", "too-many-locals", "too-many-branches", "too-many-statements"]
