@@ -9,6 +9,10 @@ from langchain_core.documents import Document
 from langchain_groq import ChatGroq
 from langchain.chains.summarize import load_summarize_chain
 
+from langchain_community.llms import HuggingFaceHub
+from langchain_community.llms.huggingface_pipeline import HuggingFacePipeline
+from transformers import AutoModelForCausalLM, AutoTokenizer, pipeline
+
 from src.core.config import GROQ_API_KEY, LLM_MODEL_NAME
 from src.core.vector_store_manager import Chroma # For retriever type hint
 
@@ -28,12 +32,35 @@ Question: {question}
 Helpful Answer:"""
 
 
+# def get_llm():
+#     """Initializes and returns the Groq LLM."""
+#     logger.info(f"Initializing Groq LLM with model: {LLM_MODEL_NAME}")
+#     if not GROQ_API_KEY:
+#         raise ValueError("GROQ_API_KEY not found in environment variables.")
+#     return ChatGroq(temperature=0, groq_api_key=GROQ_API_KEY, model_name=LLM_MODEL_NAME)
+
 def get_llm():
-    """Initializes and returns the Groq LLM."""
-    logger.info(f"Initializing Groq LLM with model: {LLM_MODEL_NAME}")
-    if not GROQ_API_KEY:
-        raise ValueError("GROQ_API_KEY not found in environment variables.")
-    return ChatGroq(temperature=0, groq_api_key=GROQ_API_KEY, model_name=LLM_MODEL_NAME)
+    """Initializes and returns a local Hugging Face LLM."""
+    logger.info(f"Initializing local Hugging Face LLM with model: {LLM_MODEL_NAME}")
+    
+    # Load the tokenizer and model
+    tokenizer = AutoTokenizer.from_pretrained(LLM_MODEL_NAME)
+    model = AutoModelForCausalLM.from_pretrained(LLM_MODEL_NAME)
+    
+    # Create a text generation pipeline
+    pipe = pipeline(
+        "text-generation",
+        model=model,
+        tokenizer=tokenizer,
+        max_new_tokens=512,
+        temperature=0,
+        device="cpu"  # or "cpu" if you don't have GPU
+    )
+    
+    # Create and return the HuggingFacePipeline
+    return HuggingFacePipeline(pipeline=pipe)
+
+
 
 
 def create_rag_chain(retriever: Chroma.as_retriever):
