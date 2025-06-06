@@ -77,9 +77,25 @@ To evaluate the RAG system's performance:
     ```bash
     python evaluation/evaluate_rag.py
     ```
+
+The evaluation process uses GroqEval to assess four key metrics:
+- **Answer Relevance**: Measures how well the generated answer addresses the question (0-10)
+- **Faithfulness**: Evaluates factual consistency with the provided context (0-10)
+- **Context Relevance**: Assesses how relevant the context is to the question (0-10)
+- **Correctness**: Uses string similarity to compare generated answers with ground truth (0-1 scaled to 0-10)
+
+### Model Performance Comparison
+
+| Model | Relevance | Faithfulness | Context Rel. | Correctness | Cost (per 1M tokens) | Cost (request) | Speed (tokens/sec) | Speed (request)
+|-------|-----------|--------------|--------------|-------------|---------------------|-------------------|---------------------|-------------------|
+| Groq llama-3.1-8b-instant | 4.97 | 5.92 | 1.33 | 0.84 | $0.05 / $0.08 | around $0.01 | 750 t/s | around 1-2 sec |
+| Groq llama-3.1-8b-instant (without summarization) | 4.43 | 4.72 | 1.37 | 0.54 | $0.05 / $0.08 | around $0.01 | 750 t/s | around 1-2 sec |
+| HF TinyLlama-1.1B | 4.16 | 3.19 | 1.44 | 0.11 | $0 | $0 | Variable (local) | around 1-2 sec |
+| Microsoft/phi-1 | 1.07 | 2.18 | 1.40 | 0.04 | $0 | $0 | Variable (local) | around 1-2 sec |
+
 Results will be saved in `evaluation/outputs/rag_evaluation_results.csv`.
 
-For more detailed instructions on the evaluation process, refer to <mcfolder name="evaluation" path="/Users/dtikhanovskii/Documents/WikipediaRag/evaluation/"></mcfolder>/<mcfile name="README.md" path="/Users/dtikhanovskii/Documents/WikipediaRag/evaluation/README.md"></mcfile>.
+For more detailed information about the evaluation process and metrics, refer to the evaluation directory's README.
 
 ## Project Structure
 

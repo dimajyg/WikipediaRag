@@ -49,7 +49,8 @@ The script will:
 
 *   **Answer Relevance**: Higher scores are better. Indicates if the RAG system's answer addresses the question.
 *   **Faithfulness**: Higher scores are better. Indicates if the RAG system's answer is factually consistent with the context it was (supposedly) based on. Low scores might indicate hallucination or misinterpretation of context.
-*   **Context Relevance (to Ground Truth)**: This metric, as implemented, evaluates the relevance of the *dataset's provided context* to the question. It's more a check on the dataset quality or how GroqEval perceives the dataset's context-question alignment. For evaluating the RAG system's *retrieved* context, the `evaluate_single_question` function would need to be modified to fetch and pass the actual retrieved context to the `faithfulness` and `context_relevance` metrics.
+*   **Context Relevance (to Ground Truth)**: This metric, as implemented, evaluates the relevance of the *dataset's provided context* to the question. It's more a check on the dataset quality or how GroqEval perceives the dataset's context-question alignment.
+*   **Answer Correctness**: This metric uses Python's `difflib.SequenceMatcher` to calculate string similarity between the generated answer and the ground truth answer. The similarity ratio (0-1) is scaled to 0-10 for consistency with other metrics. This is a fallback metric used when GroqEval's built-in correctness metrics are not available. While simple, it provides a basic measure of how closely the generated answers match the expected answers.
 
 ### Customization
 
