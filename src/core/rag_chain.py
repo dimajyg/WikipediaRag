@@ -13,7 +13,7 @@ from langchain_community.llms import HuggingFaceHub
 from langchain_community.llms.huggingface_pipeline import HuggingFacePipeline
 from transformers import AutoModelForCausalLM, AutoTokenizer, pipeline
 
-from src.core.config import GROQ_API_KEY, LLM_MODEL_NAME
+from src.core.config import GROQ_API_KEY, LLM_MODEL_NAME, LLM_PROVIDER, HF_API_KEY
 from src.core.vector_store_manager import Chroma # For retriever type hint
 
 logger = logging.getLogger(__name__)
@@ -42,23 +42,29 @@ Helpful Answer:"""
 def get_llm():
     """Initializes and returns a local Hugging Face LLM."""
     logger.info(f"Initializing local Hugging Face LLM with model: {LLM_MODEL_NAME}")
+
+    if LLM_PROVIDER == "grok":
+        if not GROQ_API_KEY:
+            raise ValueError("GROQ_API_KEY not found in environment variables.")
+        return ChatGroq(temperature=0, groq_api_key=GROQ_API_KEY, model_name=LLM_MODEL_NAME)
     
-    # Load the tokenizer and model
-    tokenizer = AutoTokenizer.from_pretrained(LLM_MODEL_NAME)
-    model = AutoModelForCausalLM.from_pretrained(LLM_MODEL_NAME)
-    
-    # Create a text generation pipeline
-    pipe = pipeline(
-        "text-generation",
-        model=model,
-        tokenizer=tokenizer,
-        max_new_tokens=512,
-        temperature=0,
-        device="cpu"  # or "cpu" if you don't have GPU
-    )
-    
-    # Create and return the HuggingFacePipeline
-    return HuggingFacePipeline(pipeline=pipe)
+    elif LLM_PROVIDER == "hugging_face":    
+        if not HF_API_KEY:
+            raise ValueError("HF_API_KEY not found in environment variables.")
+
+        tokenizer = AutoTokenizer.from_pretrained(LLM_MODEL_NAME, use_auth_token=HF_API_KEY)
+        model = AutoModelForCausalLM.from_pretrained(LLM_MODEL_NAME, use_auth_token=HF_API_KEY)
+
+        pipe = pipeline(
+            "text-generation",
+            model=model,
+            tokenizer=tokenizer,
+            max_new_tokens=512,
+            temperature=0,
+            device="cpu",
+            use_auth_token=HF_API_KEY)
+        
+        return HuggingFacePipeline(pipeline=pipe)
 
 
 

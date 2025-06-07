@@ -11,6 +11,7 @@ load_dotenv()
 GROQ_API_KEY = os.getenv("GROQ_API_KEY")
 TOGETHER_API_KEY = os.getenv("TOGETHER_API_KEY")
 TELEGRAM_BOT_TOKEN = os.getenv("TELEGRAM_BOT_TOKEN")
+HF_API_KEY = os.getenv("HF_API_KEY")
 
 # ChromaDB settings
 CHROMA_DB_PATH = os.getenv("CHROMA_DB_PATH", "./data/chroma_db")
@@ -21,7 +22,7 @@ CHUNK_SIZE = int(os.getenv("CHUNK_SIZE", "256"))
 CHUNK_OVERLAP = int(os.getenv("CHUNK_OVERLAP", "16"))
 EMBEDDING_MODEL_NAME = os.getenv("EMBEDDING_MODEL_NAME", "ai-forever/ru-en-RoSBERTa")
 
-
+LLM_PROVIDER = os.getenv("LLM_PROVIDER", "grok")
 #LLM_MODEL_NAME = os.getenv("LLM_MODEL_NAME", "llama-3.1-8b-instant") # Groq model
 #LLM_MODEL_NAME = os.getenv("LLM_MODEL_NAME", "TinyLlama/TinyLlama-1.1B-Chat-v1.0") # TinyLlama
 LLM_MODEL_NAME = os.getenv("LLM_MODEL_NAME", "microsoft/phi-1") # Phi-1
@@ -39,3 +40,6 @@ if not GROQ_API_KEY:
 
 if not TELEGRAM_BOT_TOKEN:
     raise ValueError("TELEGRAM_BOT_TOKEN environment variable not set.")
+
+if not HF_API_KEY:
+    raise ValueError("HF_API_KEY environment variable not set.")
