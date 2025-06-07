@@ -32,12 +32,6 @@ Question: {question}
 Helpful Answer:"""
 
 
-# def get_llm():
-#     """Initializes and returns the Groq LLM."""
-#     logger.info(f"Initializing Groq LLM with model: {LLM_MODEL_NAME}")
-#     if not GROQ_API_KEY:
-#         raise ValueError("GROQ_API_KEY not found in environment variables.")
-#     return ChatGroq(temperature=0, groq_api_key=GROQ_API_KEY, model_name=LLM_MODEL_NAME)
 
 def get_llm():
     """Initializes and returns a local Hugging Face LLM."""
@@ -65,8 +59,6 @@ def get_llm():
             use_auth_token=HF_API_KEY)
         
         return HuggingFacePipeline(pipeline=pipe)
-
-
 
 
 def create_rag_chain(retriever: Chroma.as_retriever):
